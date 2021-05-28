@@ -3,13 +3,13 @@ folder('CI-Pipelines') {
     description('CI Pipelines')
 }
 
-pipelineJob('CI-Pipeline/frontend-CI') {
+pipelineJob('CI-Pipelines/frontend') {
     configure { flowdefinition ->
         flowdefinition << delegate. 'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
             'scm'(class:'hudson.plugin.git.GitSCM',plugin:'git') {
                 'userRemoteConfigs' {
                     'hudson.plugin.git.UserRemoteConfig' {
-                        'url'('https://github.com/srikavyapendiala/frontend.git')
+                        'url'('https://github.com/srikavyapendiala/jenkins-todo.git')
                     }
                 }
                 'branches' {
