@@ -1,30 +1,33 @@
-folder('CI-Pipelines') {
-  displayName('CI Pipelines')
-  description('CI Pipelines')
+folder('CI-Pipeline') {
+    displayName('CI Pipeline')
+    description('CI Pipeline')
 }
-def component = ["frontend","users","login","todo"];
+def component = ["frontend", "login", "users" , "todo"];
+
 def count=(component.size()-1)
 for (i in 0..count) {
-  def j=component[i]
-  pipelineJob("CI-Pipelines/${j}-ci") {
-    configure { flowdefinition ->
-      flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
-        'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
-          'userRemoteConfigs' {
-            'hudson.plugins.git.UserRemoteConfig' {
-              'url'('https://github.com/srikavyapendiala/'+j+'.git')
-              'refspec'('\'+refs/tags/*\':\'refs/remotes/origin/tags/*\'')
+    def j=component[i]
+    pipelineJob("CI-Pipeline/${j}") {
+        configure { flowdefinition ->
+            flowdefinition / 'properties' << 'org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty' {
             }
-          }
-          'branches' {
-            'hudson.plugins.git.BranchSpec' {
-             'name'('*/tags/*')
+            flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
+                'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
+                    'userRemoteConfigs' {
+                        'hudson.plugins.git.UserRemoteConfig' {
+                            'url'('https://github.com/srikavyapendiala/'+j+'.git')
+                            'refspec'('\'+refs/tags/\':\'refs/remotes/origin/tags/\'')
+                        }
+                    }
+                    'branches' {
+                        'hudson.plugins.git.BranchSpec' {
+                            'name'('/tags/')
+                        }
+                    }
+                }
+                'scriptPath'('jenkinsfile')
+                'lightweight'(true)
             }
-          }
         }
-        'scriptPath'('Jenkinsfile')
-        'lightweight'(true)
-      }
     }
-  }
 }
