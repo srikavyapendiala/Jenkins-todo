@@ -10,9 +10,6 @@ def call(Map params = [:]) {
         triggers {
             pollSCM('* * * * 1-5')
         }
-        tools {
-            maven 'mvn3.6.3'
-        }
         environment {
             COMPONENT = "${args.COMPONENT}"
             NEXUS_IP = "${args.NEXUS_IP}"
