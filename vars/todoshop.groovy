@@ -11,7 +11,7 @@ def call(Map params = [:]) {
             pollSCM('* * * * 1-5')
         }
         tools {
-            mvn 'mvn3.8.1'
+            maven 'mvn3.8.1'
         }
         environment {
             COMPONENT = "${args.COMPONENT}"
