@@ -1,6 +1,6 @@
 def call(Map params = [:]) {
     def args = [
-            NEXUS_IP               : '172.31.7.43',
+            NEXUS_IP: '172.31.7.43',
     ]
     args << params
     pipeline {
@@ -10,15 +10,18 @@ def call(Map params = [:]) {
         triggers {
             pollSCM('* * * * 1-5')
         }
+        tools {
+            maven 'mvn3.6.3'
+        }
         environment {
-            COMPONENT     = "${args.COMPONENT}"
-            NEXUS_IP      = "${args.NEXUS_IP}"
-            PROJECT_NAME  = "${args.PROJECT_NAME}"
-            SLAVE_LABEL   = "${args.SLAVE_LABEL}"
-            APP_TYPE      = "${args.APP_TYPE}"
+            COMPONENT = "${args.COMPONENT}"
+            NEXUS_IP = "${args.NEXUS_IP}"
+            PROJECT_NAME = "${args.PROJECT_NAME}"
+            SLAVE_LABEL = "${args.SLAVE_LABEL}"
+            APP_TYPE = "${args.APP_TYPE}"
         }
         stages {
-            stage('Build Code & Install Dependencies') {
+            stage('Build Project') {
                 steps {
                     script {
                         build = new nexus()
@@ -34,7 +37,7 @@ def call(Map params = [:]) {
                     }
                 }
             }
-            stage('Upload Artifacts') {
+            stage('Upload Artifact') {
                 steps {
                     script {
                         prepare = new nexus()
