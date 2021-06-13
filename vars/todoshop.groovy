@@ -1,20 +1,15 @@
 def call(Map params = [:]) {
-  
   def args = [
           NEXUS_IP               : '172.31.7.43',
   ]
   args << params
-
-  
   pipeline {
     agent {
       label "${args.SLAVE_LABEL}"
     }
-
     triggers {
       pollSCM('* * * * 1-5')
     }
-
     environment {
       COMPONENT     = "${args.COMPONENT}"
       NEXUS_IP      = "${args.NEXUS_IP}"
@@ -22,9 +17,7 @@ def call(Map params = [:]) {
       SLAVE_LABEL   = "${args.SLAVE_LABEL}"
       APP_TYPE      = "${args.APP_TYPE}"
     }
-
     stages {
-
       stage('Build Code & Install Dependencies') {
         steps {
           script {
@@ -33,8 +26,6 @@ def call(Map params = [:]) {
           }
         }
       }
-
-
       stage('Prepare Artifacts') {
         steps {
           script {
@@ -43,7 +34,6 @@ def call(Map params = [:]) {
           }
         }
       }
-
       stage('Upload Artifacts') {
         steps {
           script {
@@ -52,8 +42,6 @@ def call(Map params = [:]) {
           }
         }
       }
-
     }
-
   }
 }
