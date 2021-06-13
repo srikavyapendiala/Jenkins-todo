@@ -2,11 +2,9 @@ def nexus(COMPONENT) {
   get_branch = "env | grep GIT_BRANCH | awk -F / '{print \$NF}' | xargs echo -n"
   def get_branch_exec=sh(returnStdout: true, script: get_branch)
   def FILENAME=COMPONENT+'-'+get_branch_exec+'.zip'
-
   command = "curl -f -v -u admin:kavya --upload-file ${FILENAME} http://172.31.7.43:8081/repository/${COMPONENT}/${FILENAME}"
   def execute_state=sh(returnStdout: true, script: command)
 }
-
 def make_artifacts(APP_TYPE, COMPONENT) {
   get_branch = "env | grep GIT_BRANCH | awk -F / '{print \$NF}' | xargs echo -n"
   def get_branch_exec=sh(returnStdout: true, script: get_branch)
@@ -30,7 +28,6 @@ def make_artifacts(APP_TYPE, COMPONENT) {
     print execute_com
   }
 }
-
 def code_build(APP_TYPE, COMPONENT) {
   if(APP_TYPE == "NODEJS") {
     command = "npm install"
@@ -41,13 +38,13 @@ def code_build(APP_TYPE, COMPONENT) {
     def execute_com=sh(returnStdout: true, script: command)
     print execute_com
   } else if(APP_TYPE == "GOLANG") {
-    command =  "  go get github.com/dgrijalva/jwt-go && go get github.com/labstack/echo && go get github.com/labstack/echo/middleware && go get github.com/labstack/gommon/log && go get github.com/openzipkin/zipkin-go && go get github.com/openzipkin/zipkin-go/middleware/http && go get github.com/openzipkin/zipkin-go/reporter/http &&  go build"
+    command = "go build"
     def execute_com=sh(returnStdout: true, script: command)
     print execute_com
   } else if(APP_TYPE == "NGINX") {
     command = "npm install && npm run build"
     def execute_com=sh(returnStdout: true, script: command)
     print execute_com
-  
   }
 }
+
