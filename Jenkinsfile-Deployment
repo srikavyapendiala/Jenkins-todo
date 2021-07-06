@@ -33,7 +33,7 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/srikavyapendiala/ansible-todo.git'
                 sh '''
-                    ansible-playbook -i inv todoshop.yml -t ${COMPONENT} -e COMPONENT=${COMPONENT} -e ENV=${ENV} -e APP_VERSION=${VERSION}
+                    ansible-playbook -i inv todoshop.yml -t ${COMPONENT} -e COMPONENT=${COMPONENT} -e ENV=${ENV} -e APP_VERSION=${VERSION} -e ansible_password=${UBUNTU_SSH_PASSWORD}
                 '''
             }
         }
