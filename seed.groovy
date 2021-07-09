@@ -3,7 +3,7 @@ folder('CI-Pipelines') {
   description('CI Pipelines')
 }
 
-def component = ["frontend","users","login","todo"];
+def component = ["frontend","users","login","todo","redis"];
 
 def count=(component.size()-1)
 for (i in 0..count) {
@@ -20,34 +20,14 @@ for (i in 0..count) {
           }
           'branches' {
             'hudson.plugins.git.BranchSpec' {
-               'name'('*/tags/*')
+               'name'('*/main')
             }
           }
         }
-        'scriptPath'('Jenkinsfile-Docker')
+        'scriptPath'('Jenkinsfile')
         'lightweight'(true)
       }
     }
   }
 }
 
-pipelineJob("Deployment Pipeline") {
-  configure { flowdefinition ->
-    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
-      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
-        'userRemoteConfigs' {
-          'hudson.plugins.git.UserRemoteConfig' {
-            'url'('https://github.com/srikavyapendiala/jenkins-todo.git')
-          }
-        }
-        'branches' {
-          'hudson.plugins.git.BranchSpec' {
-            'name'('main')
-          }
-        }
-      }
-      'scriptPath'('Jenkinsfile-Deployment')
-      'lightweight'(true)
-    }
-  }
-}
