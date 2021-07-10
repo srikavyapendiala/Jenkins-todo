@@ -32,7 +32,7 @@ for (i in 0..count) {
             }
           }
         }
-        'scriptPath'('Jenkinsfile-Docker')
+        'scriptPath'('Jenkinsfile')
         'lightweight'(true)
       }
     }
@@ -95,9 +95,9 @@ for (i in 0..count) {
             }
           }
         }
-        'scriptPath'('Jenkinsfile')
+        'scriptPath'('Jenkinsfile-Docker')
         'lightweight'(true)
       }
     }
   }
-
+}
