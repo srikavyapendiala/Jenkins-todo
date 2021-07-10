@@ -60,8 +60,17 @@ pipelineJob("Deployment Pipeline") {
   }
 }
 
+folder('Docker-Pipelines') {
+  displayName('Docker Pipelines')
+  description('Docker Pipelines')
+}
 
-  pipelineJob("Docker Pipeline") {
+def component = ["frontend","todo","login","users"];
+
+def count=(component.size()-1)
+for (i in 0..count) {
+  def j=component[i]
+  pipelineJob("Docker-Pipelines/${j}-Docker") {
     configure { flowdefinition ->
       flowdefinition / 'properties' << 'org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty' {
         'triggers' {
