@@ -32,7 +32,7 @@ for (i in 0..count) {
             }
           }
         }
-        'scriptPath'('Jenkinsfile-Docker')
+        'scriptPath'('Jenkinsfile')
         'lightweight'(true)
       }
     }
@@ -54,7 +54,7 @@ pipelineJob("Deployment Pipeline") {
           }
         }
       }
-      'scriptPath'('Jenkinsfile-Deployment')
+      'scriptPath'('Jenkinsfile-Docker')
       'lightweight'(true)
     }
   }
