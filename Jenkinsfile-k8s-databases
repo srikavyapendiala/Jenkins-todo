@@ -19,7 +19,6 @@ pipeline {
             steps {
                 sh '''
                     helm upgrade -i todo bitnami/todo --set auth.enabled=false
-                    kubectl apply -f todo-schema.yml
                 '''
             }
         }
@@ -27,7 +26,7 @@ pipeline {
         stage('Deploy login Helm Chart') {
             steps {
                 sh '''
-                    helm upgrade -i login bitnami/rabbitmq || true 
+                    helm upgrade -i login bitnami/login || true 
                 '''
             }
         }
@@ -44,7 +43,6 @@ pipeline {
             steps {
                 sh '''
                      helm upgrade -i users bitnami/users --set auth.enabled=false
-                     kubectl apply -f users-schema.yml
                 '''
             }
         }
