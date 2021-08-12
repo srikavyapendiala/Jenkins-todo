@@ -1,0 +1,60 @@
+pipeline {
+    agent {
+        label "K8S"
+    }
+
+    stages {
+
+        stage('Install Helm Repo') {
+            steps {
+                sh '''
+                    helm repo add bitnami https://charts.bitnami.com/bitnami
+                    helm repo add stable https://charts.helm.sh/stable
+                    helm repo update
+                '''
+            }
+        }
+
+        stage('Deploy todo Helm Chart') {
+            steps {
+                sh '''
+                    helm upgrade -i todo bitnami/todo --set auth.enabled=false
+                    kubectl apply -f todo-schema.yml
+                '''
+            }
+        }
+
+        stage('Deploy login Helm Chart') {
+            steps {
+                sh '''
+                    helm upgrade -i login bitnami/rabbitmq || true 
+                '''
+            }
+        }
+
+        stage('Deploy Redis Helm Chart') {
+            steps {
+                sh '''
+                    helm upgrade -i redis bitnami/redis --set auth.enabled=false
+                '''
+            }
+        }
+
+        stage('Deploy users Helm Chart') {
+            steps {
+                sh '''
+                     helm upgrade -i users bitnami/users --set auth.enabled=false
+                     kubectl apply -f users-schema.yml
+                '''
+            }
+        }
+
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
+
