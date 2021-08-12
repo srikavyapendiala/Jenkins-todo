@@ -127,3 +127,133 @@ pipelineJob("Kubernetes/Databases") {
   }
 }
 
+pipelineJob("Kubernetes/Frontend") {
+  configure { flowdefinition ->
+    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
+      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
+        'userRemoteConfigs' {
+          'hudson.plugins.git.UserRemoteConfig' {
+            'url'('https://github.com/srikavyapendiala/frontend.git')
+          }
+        }
+        'branches' {
+          'hudson.plugins.git.BranchSpec' {
+            'name'('main')
+          }
+        }
+      }
+      'scriptPath'('Jenkinsfile-K8S')
+      'lightweight'(true)
+    }
+  }
+}
+
+pipelineJob("Kubernetes/users") {
+  configure { flowdefinition ->
+    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
+      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
+        'userRemoteConfigs' {
+          'hudson.plugins.git.UserRemoteConfig' {
+            'url'('https://github.com/srikavyapendiala/users.git')
+          }
+        }
+        'branches' {
+          'hudson.plugins.git.BranchSpec' {
+            'name'('main')
+          }
+        }
+      }
+      'scriptPath'('Jenkinsfile-K8S')
+      'lightweight'(true)
+    }
+  }
+}
+
+pipelineJob("Kubernetes/redis") {
+  configure { flowdefinition ->
+    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
+      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
+        'userRemoteConfigs' {
+          'hudson.plugins.git.UserRemoteConfig' {
+            'url'('https://github.com/srikavyapendiala/redis.git')
+          }
+        }
+        'branches' {
+          'hudson.plugins.git.BranchSpec' {
+            'name'('main')
+          }
+        }
+      }
+      'scriptPath'('Jenkinsfile-K8S')
+      'lightweight'(true)
+    }
+  }
+}
+
+pipelineJob("Kubernetes/login") {
+  configure { flowdefinition ->
+    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
+      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
+        'userRemoteConfigs' {
+          'hudson.plugins.git.UserRemoteConfig' {
+            'url'('https://github.com/srikavyapendiala/login.git')
+          }
+        }
+        'branches' {
+          'hudson.plugins.git.BranchSpec' {
+            'name'('main')
+          }
+        }
+      }
+      'scriptPath'('Jenkinsfile-K8S')
+      'lightweight'(true)
+    }
+  }
+}
+
+pipelineJob("Kubernetes/todo") {
+  configure { flowdefinition ->
+    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
+      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
+        'userRemoteConfigs' {
+          'hudson.plugins.git.UserRemoteConfig' {
+            'url'('https://github.com/srikavyapendiala/todo.git')
+          }
+        }
+        'branches' {
+          'hudson.plugins.git.BranchSpec' {
+            'name'('main')
+          }
+        }
+      }
+      'scriptPath'('Jenkinsfile-K8S')
+      'lightweight'(true)
+    }
+  }
+}
+
+pipelineJob("CI-CD-Test") {
+  configure { flowdefinition ->
+    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
+      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
+        'userRemoteConfigs' {
+          'hudson.plugins.git.UserRemoteConfig' {
+            'url'('https://github.com/srikavyapendiala/frontend.git')
+            'refspec'('\'+refs/tags/*\':\'refs/remotes/origin/tags/*\'')
+          }
+        }
+        'branches' {
+          'hudson.plugins.git.BranchSpec' {
+            'name'('*/tags/*')
+          }
+          'hudson.plugins.git.BranchSpec' {
+            'name'('*/main')
+          }
+        }
+      }
+      'scriptPath'('Jenkinsfile-cicd')
+      'lightweight'(true)
+    }
+  }
+}
+
